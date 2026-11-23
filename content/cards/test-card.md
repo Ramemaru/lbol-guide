@@ -3,7 +3,7 @@ title: テスト記事
 slug: test-card
 status: 検討中
 tags: []
-draft: true
+draft: false
 sample: false
 ---
 ## 結論
