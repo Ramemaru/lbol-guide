@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-intro shell">
+  <div class="breadcrumbs"><a href="{{ root_url }}index.html">ホーム</a><span>/</span>{{ sections[section].label }}</div>
+  <p class="section-kicker">{{ sections[section].eyebrow }}</p>
+  <h1>{{ sections[section].label }}</h1>
+  <p class="page-lead">{{ sections[section].description }}</p>
+</section>
+<section class="shell listing-section" data-listing>
+  <div class="listing-toolbar">
+    <label class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">記事を検索</span><input type="search" id="article-search" placeholder="タイトル・タグ・キーワードで検索" autocomplete="off"></label>
+    <div class="filters">
+      {% if section == 'cards' %}
+      <label><span class="sr-only">キャラクターで絞り込み</span><select class="article-filter" data-field="character"><option value="">全キャラクター</option>{% for a in articles|map(attribute='character')|unique|list|sort %}{% if a and a != '未設定' %}<option>{{ a }}</option>{% endif %}{% endfor %}</select></label>
+      {% elif section == 'bosses' %}
+      <label><span class="sr-only">出現箇所で絞り込み</span><select class="article-filter" data-field="stage"><option value="">全ステージ</option>{% for a in articles|map(attribute='stage')|unique|list|sort %}{% if a and a != '未設定' %}<option>{{ a }}</option>{% endif %}{% endfor %}</select></label>
+      {% endif %}
+      <label><span class="sr-only">記事の状態で絞り込み</span><select class="article-filter" data-field="status"><option value="">すべての状態</option>{% for a in articles|map(attribute='status')|unique|list|sort %}{% if a %}<option>{{ a }}</option>{% endif %}{% endfor %}</select></label>
+    </div>
+  </div>
+  <div class="listing-count"><span id="results-count">{{ articles|length }}</span> 件の記事</div>
+  {% if articles %}
+  <div class="article-grid" id="article-grid">
+    {% for article in articles %}
+    <a class="article-tile" href="{{ root_url }}{{ article.url[1:] }}index.html" data-title="{{ article.title }}" data-summary="{{ article.summary }}" data-tags="{{ article.tags|join(' ') }}" data-character="{{ article.character }}" data-stage="{{ article.stage }}" data-status="{{ article.status }}">
+      <div class="tile-top"><span class="tile-type">{{ 'CARD' if section == 'cards' else ('BOSS' if section == 'bosses' else 'CHARACTER') }} / {{ '%02d'|format(loop.index) }}</span><span class="tile-arrow">↗</span></div>
+      <div class="tile-symbol">{% if section=='cards' %}✦{% elif section=='bosses' %}♜{% else %}✳{% endif %}</div>
+      <h2>{{ article.title }}</h2>
+      <p>{{ article.summary }}</p>
+      <div class="tile-tags"><span class="status-tag">{{ article.status }}</span>{% if article.sample %}<span class="sample-tag">サンプル</span>{% endif %}{% for tag in article.tags[:2] %}<span>{{ tag }}</span>{% endfor %}</div>
+    </a>
+    {% endfor %}
+  </div>
+  <div class="empty-results" id="empty-results" hidden><span>⌕</span><h2>該当する記事がありません</h2><p>検索語や絞り込み条件を変えてみてください。</p></div>
+  {% else %}
+  <div class="empty-results empty-start"><span>✧</span><h2>これから記事を追加していく場所</h2><p>内容が固まったところから、個別の考察を掲載します。</p><a href="{{ root_url }}index.html">トップに戻る →</a></div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="shell article-wrap">
+  <div class="breadcrumbs"><a href="{{ root_url }}index.html">ホーム</a><span>/</span><a href="{{ root_url }}{{ section }}/index.html">{{ sections[section].label }}</a><span>/</span><span class="breadcrumb-current">{{ article.title }}</span></div>
+  <div class="article-layout">
+    <article class="article-main">
+      <header class="article-header">
+        <p class="section-kicker">{{ sections[section].eyebrow }} / ANALYSIS</p>
+        <h1>{{ article.title }}</h1>
+        {% if article.summary %}<p class="article-summary">{{ article.summary }}</p>{% endif %}
+        <div class="article-badges"><span class="status-tag">{{ article.status }}</span>{% if article.sample %}<span class="sample-tag">見本記事・攻略情報ではありません</span>{% endif %}{% for tag in article.tags %}<span class="article-badge">{{ tag }}</span>{% endfor %}</div>
+        <dl class="article-meta">
+          {% if article.character and article.character != '未設定' %}<div><dt>対象キャラ</dt><dd>{{ article.character }}</dd></div>{% endif %}
+          {% if article.cost and article.cost != '未設定' %}<div><dt>コスト</dt><dd>{{ article.cost }}</dd></div>{% endif %}
+          {% if article.rarity and article.rarity != '未設定' %}<div><dt>レアリティ</dt><dd>{{ article.rarity }}</dd></div>{% endif %}
+          {% if article.stage and article.stage != '未設定' %}<div><dt>登場箇所</dt><dd>{{ article.stage }}</dd></div>{% endif %}
+          {% if article.version and article.version != '未記入' %}<div><dt>対象バージョン</dt><dd>{{ article.version }}</dd></div>{% endif %}
+          {% if article.updated %}<div><dt>更新</dt><dd>{{ article.updated }}</dd></div>{% endif %}
+        </dl>
+      </header>
+      {% if article.image %}
+      <figure class="article-cover">
+        <img loading="lazy" src="{{ article.image if article.image.startswith('https://') else root_url ~ article.image }}" alt="{{ article.image_alt }}">
+      </figure>
+      {% endif %}
+      <div class="prose">{{ article.html|safe }}</div>
+      <footer class="article-end"><div><span>✧</span> 戦略の答えは、一つとは限らない。</div><a href="{{ root_url }}{{ section }}/index.html">← {{ sections[section].label }}一覧へ</a></footer>
+    </article>
+    <aside class="article-aside" aria-label="記事の目次">
+      <div class="aside-inner"><p class="aside-title">ON THIS PAGE</p>
+      {% if article.toc %}<nav class="toc">{% for h in article.toc %}<a class="toc-level-{{ h.level }}" href="#{{ h.anchor }}">{{ h.title }}</a>{% endfor %}</nav>{% else %}<p class="aside-hint">目次はありません</p>{% endif %}
+      <div class="aside-bottom"><p>この記事は個人の考察です。<br>未検証の内容は明記します。</p><a href="{{ root_url }}{{ section }}/index.html">記事一覧に戻る ↗</a></div></div>
+    </aside>
+  </div>
+</div>
+{% endblock %}

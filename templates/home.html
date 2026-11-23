@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero shell">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-line"></span> LOST BRANCH OF LEGEND / STRATEGY LOG</div>
+    <h1>勝ち方だけでなく、<br><em>判断の理由</em>を残す。</h1>
+    <p class="hero-lead">LBoL（東方光耀夜）の上級者向け個人攻略ノート。<br>カード選択の根拠、ボス戦の対処、試行錯誤の過程を整理する。</p>
+    <div class="hero-actions">
+      <a class="button-primary" href="{{ root_url }}cards/index.html">カードを探す <span aria-hidden="true">↗</span></a>
+      <a class="button-text" href="{{ root_url }}bosses/index.html">ボス攻略を見る <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="glow-orbit glow-orbit--outer"></div><div class="glow-orbit glow-orbit--inner"></div>
+    <div class="abstract-card card-back"><span>✧</span></div>
+    <div class="abstract-card card-front"><span class="card-corner">LBoL</span><span class="card-center">✦</span><span class="card-bottom">STRATEGY<br>NOTES</span></div>
+    <div class="hero-spark hero-spark-a">✧</div><div class="hero-spark hero-spark-b">✦</div>
+  </div>
+</section>
+<section class="shell section-block">
+  <div class="section-head">
+    <div><p class="section-kicker">EXPLORE THE ARCHIVE</p><h2>攻略を読む</h2></div>
+    <p>知りたいことから辿れるように、まずは３つの入口を用意。</p>
+  </div>
+  <div class="category-grid">
+    <a class="category-card" href="{{ root_url }}cards/index.html">
+      <div class="category-top"><span class="category-number">01 / CARD</span><span class="category-icon">▣</span></div>
+      <h3>カード解説</h3><p>「強い」だけでは終わらせない。採用する条件、見送る条件を掘り下げる。</p>
+      <div class="category-bottom"><span>{{ all_articles.cards|length }} 件の記事</span><span>詳しく見る ↗</span></div>
+    </a>
+    <a class="category-card" href="{{ root_url }}bosses/index.html">
+      <div class="category-top"><span class="category-number">02 / BOSS</span><span class="category-icon">♜</span></div>
+      <h3>ボス攻略</h3><p>危険な行動、必要な対策、リソース配分と立ち回りを整理する。</p>
+      <div class="category-bottom"><span>{{ all_articles.bosses|length }} 件の記事</span><span>詳しく見る ↗</span></div>
+    </a>
+    <a class="category-card" href="{{ root_url }}characters/index.html">
+      <div class="category-top"><span class="category-number">03 / CHARACTER</span><span class="category-icon">✳</span></div>
+      <h3>キャラ別攻略</h3><p>方針やカードピックの指針を、考えがまとまったところから追加する。</p>
+      <div class="category-bottom"><span>{{ all_articles.characters|length }} 件の記事</span><span>詳しく見る ↗</span></div>
+    </a>
+  </div>
+</section>
+<section class="shell principles-section">
+  <div class="principles-card">
+    <div class="principles-title"><p class="section-kicker">ABOUT THIS SITE</p><h2>このサイトで<br>大切にすること</h2></div>
+    <div class="principles-list">
+      <div><span class="principle-num">I.</span><div><h3>条件まで書く</h3><p>評価は固定ではない。デッキ、状況、戦う相手で結論が変わることを明記する。</p></div></div>
+      <div><span class="principle-num">II.</span><div><h3>根拠を残す</h3><p>採用理由、反例、未検証の論点も含めて、判断の過程を追えるようにする。</p></div></div>
+      <div><span class="principle-num">III.</span><div><h3>考察は更新する</h3><p>新しい発見やゲームの変化に合わせて、解説も修正していく。</p></div></div>
+    </div>
+  </div>
+</section>
+{% if latest %}
+<section class="shell section-block latest-section">
+  <div class="section-head"><div><p class="section-kicker">LATEST ENTRIES</p><h2>記事の入口</h2></div><p>現段階の掲載記事。サンプルは実際の攻略情報ではありません。</p></div>
+  <div class="compact-list">
+    {% for article in latest %}
+    <a class="compact-link" href="{{ root_url }}{{ article.url[1:] }}index.html"><span class="compact-icon">{% if article.section=='cards' %}▣{% elif article.section=='bosses' %}♜{% else %}✳{% endif %}</span><span class="compact-main"><strong>{{ article.title }}</strong><small>{{ sections[article.section].label }} · {{ article.summary }}</small></span><span class="compact-arrow">↗</span></a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

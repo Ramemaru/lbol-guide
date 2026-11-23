@@ -1,0 +1,168 @@
+# LBoL 攻略ノート / Decap CMS
+# 公開用リポジトリ: Ramemaru/lbol-guide（新規作成後に使用）。
+# Netlify 側では GitHub OAuth プロバイダも有効化します（README 参照）。
+backend:
+  name: github
+  repo: Ramemaru/lbol-guide
+  branch: main
+
+# localhost で npx decap-server を動かすと GitHub ログイン不要で編集できます。
+# 本番サイトでは GitHub バックエンドが使われます。
+local_backend: true
+
+locale: ja
+show_preview_links: false
+
+# 画像をここに保存。公開時には /assets/uploads/ に配信されます。
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+# 新規記事では独自の英数字スラッグを指定し、
+# content/{type}/{slug}.md と公開先 /{type}/{slug}/ を対応させます。
+collections:
+  - name: cards
+    label: カード解説
+    label_singular: カード記事
+    folder: content/cards
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    slug: "{{fields.slug}}"
+    slug_collision: reject
+    summary: "{{title}} · {{status}}"
+    fields:
+      - { label: カード名・記事タイトル, name: title, widget: string }
+      - label: URL用ID
+        name: slug
+        widget: string
+        hint: 英小文字・数字・ハイフンのみ（例：my-card）。初回保存後は変更しないでください。
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', '英小文字・数字・ハイフンのみ使用してください']
+      - { label: 一覧用の短い説明, name: summary, widget: text, required: false }
+      - { label: 対象キャラクター, name: character, widget: string, required: false }
+      - { label: コスト, name: cost, widget: string, required: false }
+      - { label: レアリティ, name: rarity, widget: string, required: false }
+      - { label: 考察の確信度, name: status, widget: string, default: 検討中 }
+      - { label: 対象ゲームバージョン, name: version, widget: string, required: false }
+      - { label: 最終確認日, name: updated, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
+      - label: タグ
+        name: tags
+        widget: list
+        required: false
+        default: []
+        field: { label: タグ, name: tag, widget: string }
+      - { label: 代表画像, name: image, widget: image, required: false, hint: 省略可。画像の利用許諾をご確認ください。 }
+      - { label: 画像の代替テキスト, name: image_alt, widget: string, required: false }
+      - { label: 下書き（ONだとサイトに出ません）, name: draft, widget: boolean, default: true, required: false }
+      - { label: 見本記事, name: sample, widget: boolean, default: false, required: false, hint: 見本記事にだけONを使います。 }
+      - label: 本文
+        name: body
+        widget: markdown
+        default: |
+          ## 結論
+
+          ## 強い場面
+
+          ## 評価が下がる場面
+
+          ## ピックの判断基準
+
+          ## シナジー・他のカードとの比較
+
+          ## 検証メモ
+
+  - name: bosses
+    label: ボス攻略
+    label_singular: ボス記事
+    folder: content/bosses
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    slug: "{{fields.slug}}"
+    slug_collision: reject
+    summary: "{{title}} · {{status}}"
+    fields:
+      - { label: ボス名・記事タイトル, name: title, widget: string }
+      - label: URL用ID
+        name: slug
+        widget: string
+        hint: 英小文字・数字・ハイフンのみ（例：my-boss）。初回保存後は変更しないでください。
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', '英小文字・数字・ハイフンのみ使用してください']
+      - { label: 一覧用の短い説明, name: summary, widget: text, required: false }
+      - { label: 登場箇所・章, name: stage, widget: string, required: false }
+      - { label: 考察の確信度, name: status, widget: string, default: 検討中 }
+      - { label: 対象ゲームバージョン, name: version, widget: string, required: false }
+      - { label: 最終確認日, name: updated, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
+      - label: タグ
+        name: tags
+        widget: list
+        required: false
+        default: []
+        field: { label: タグ, name: tag, widget: string }
+      - { label: 代表画像, name: image, widget: image, required: false }
+      - { label: 画像の代替テキスト, name: image_alt, widget: string, required: false }
+      - { label: 下書き（ONだとサイトに出ません）, name: draft, widget: boolean, default: true, required: false }
+      - { label: 見本記事, name: sample, widget: boolean, default: false, required: false }
+      - label: 本文
+        name: body
+        widget: markdown
+        default: |
+          ## このボスの脅威
+
+          ## 戦闘前の準備
+
+          ## 戦闘中の判断
+
+          ## デッキによる対策の違い
+
+          ## 検証メモ
+
+  - name: characters
+    label: キャラ別攻略
+    label_singular: キャラ記事
+    description: 記事構成は今後変更していく前提です。
+    folder: content/characters
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    slug: "{{fields.slug}}"
+    slug_collision: reject
+    summary: "{{title}} · {{status}}"
+    fields:
+      - { label: キャラクター名・記事タイトル, name: title, widget: string }
+      - label: URL用ID
+        name: slug
+        widget: string
+        hint: 英小文字・数字・ハイフンのみ（例：my-character）。初回保存後は変更しないでください。
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', '英小文字・数字・ハイフンのみ使用してください']
+      - { label: 一覧用の短い説明, name: summary, widget: text, required: false }
+      - { label: 考察の確信度, name: status, widget: string, default: 検討中 }
+      - { label: 対象ゲームバージョン, name: version, widget: string, required: false }
+      - { label: 最終確認日, name: updated, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
+      - label: タグ
+        name: tags
+        widget: list
+        required: false
+        default: []
+        field: { label: タグ, name: tag, widget: string }
+      - { label: 代表画像, name: image, widget: image, required: false }
+      - { label: 画像の代替テキスト, name: image_alt, widget: string, required: false }
+      - { label: 下書き（ONだとサイトに出ません）, name: draft, widget: boolean, default: true, required: false }
+      - { label: 見本記事, name: sample, widget: boolean, default: false, required: false }
+      - label: 本文
+        name: body
+        widget: markdown
+        default: |
+          ## 全体方針
+
+          ## 序盤の考え方
+
+          ## カードピックの判断
+
+          ## 強い組み合わせ
+
+          ## 苦手な相手と対策
+
+          ## 検証メモ

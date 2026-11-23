@@ -1,0 +1,8 @@
+# Netlify はこのファイルを含む GitHub リポジトリからビルドします。
+# dist/ の ZIP をドラッグ＆ドロップするだけでは Decap CMS での保存・自動更新はできません。
+[build]
+  command = "python3 -m pip install -r requirements.txt && python3 build.py"
+  publish = "dist"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"

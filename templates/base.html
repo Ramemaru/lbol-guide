@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0d1425">
+  <meta name="description" content="{{ (page_description or site_description)|e }}">
+  <meta property="og:title" content="{{ page_title }} | {{ site_name }}">
+  <meta property="og:description" content="{{ (page_description or site_description)|e }}">
+  <meta property="og:type" content="article">
+  <link rel="icon" type="image/svg+xml" href="{{ root_url }}assets/favicon.svg">
+  <link rel="stylesheet" href="{{ root_url }}assets/style.css">
+  <title>{{ page_title }} | {{ site_name }}</title>
+</head>
+<body>
+  <div class="top-decoration" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="header-inner shell">
+      <a class="brand" href="{{ root_url }}index.html" aria-label="LBoL 攻略ノートのトップページ">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span class="brand-copy"><strong>LBoL</strong><small>攻略ノート</small></span>
+      </a>
+      <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="メニューを開く">☰</button>
+      <nav id="primary-nav" class="primary-nav" aria-label="メインメニュー">
+        <a href="{{ root_url }}index.html" {% if current_section == 'home' %}aria-current="page"{% endif %}>ホーム</a>
+        <a href="{{ root_url }}cards/index.html" {% if current_section == 'cards' %}aria-current="page"{% endif %}>カード解説</a>
+        <a href="{{ root_url }}bosses/index.html" {% if current_section == 'bosses' %}aria-current="page"{% endif %}>ボス攻略</a>
+        <a href="{{ root_url }}characters/index.html" {% if current_section == 'characters' %}aria-current="page"{% endif %}>キャラ別攻略</a>
+      </nav>
+      <span class="header-note">THEORY / PRACTICE / NOTES</span>
+    </div>
+  </header>
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div><strong>LBoL 攻略ノート</strong><p>プレイ経験と考察を、後から読み返せる形に。</p></div>
+      <span>非公式の個人攻略サイトです。ゲームの公式サイトとは関係ありません。 <a class="admin-link" href="{{ root_url }}admin/index.html" rel="nofollow">記事を編集</a></span>
+    </div>
+  </footer>
+  <script src="{{ root_url }}assets/app.js" defer></script>
+</body>
+</html>
